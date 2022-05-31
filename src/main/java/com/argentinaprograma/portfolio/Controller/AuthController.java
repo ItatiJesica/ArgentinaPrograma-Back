@@ -57,11 +57,7 @@ public class AuthController {
         Usuario usuario =
                 new Usuario(nuevoUsuarioDto.getNombre(), nuevoUsuarioDto.getNombreUsuario(), nuevoUsuarioDto.getEmail(),
                         passwordEncoder.encode(nuevoUsuarioDto.getPassword()));
-        Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
-        if(nuevoUsuarioDto.getRoles().contains("admin"))
-            roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
-        usuario.setRoles(roles);
+
         usuarioService.save(usuario);
         return new ResponseEntity(new MensajeDto("usuario guardado"), HttpStatus.CREATED);
     }
