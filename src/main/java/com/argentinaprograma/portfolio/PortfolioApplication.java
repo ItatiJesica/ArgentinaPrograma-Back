@@ -20,6 +20,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class PortfolioApplication {
@@ -32,57 +34,28 @@ public class PortfolioApplication {
 		SpringApplication.run(PortfolioApplication.class, args);
 	}
 
-	@Configuration
-	@EnableWebSecurity
-	@EnableGlobalMethodSecurity(prePostEnabled = true)
+	@Bean
 
-	public class MainSecurity extends WebSecurityConfigurerAdapter {
 
-		@Autowired
-		UserDetailsServiceImpl userDetailsService;
 
-		@Autowired
-		JwtEntryPoint jwtEntryPoint;
+	public WebMvcConfigurer corsConfigurer(){
 
-		@Bean
-		public JwtTokenFilter jwtTokenFilter(){
-			return new JwtTokenFilter();
-		}
+		return new WebMvcConfigurer(){
 
-		@Bean
-		public PasswordEncoder passwordEncoder(){
-			return new BCryptPasswordEncoder();
-		}
+			@Override
 
-		@Override
-		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-			auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-		}
+			public void addCorsMappings(CorsRegistry registry){
 
-		@Bean
-		@Override
-		public AuthenticationManager authenticationManagerBean() throws Exception {
-			return super.authenticationManagerBean();
-		}
+				registry.addMapping("/**")
 
-		@Override
-		protected AuthenticationManager authenticationManager() throws Exception {
-			return super.authenticationManager();
-		}
+						.allowedHeaders("*")
 
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			http.cors().and().csrf().disable()
-					.exceptionHandling()
-					.authenticationEntryPoint(jwtEntryPoint)
-					.and()
-					.sessionManagement()
-					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-					.and()
-					.authorizeRequests().antMatchers(HttpMethod.GET, "/api/**").permitAll()
-					.antMatchers("/auth/**").permitAll()
-					.anyRequest()
-					.authenticated();
-			http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-		}}
+						.allowedMethods("*")
+
+						.allowCredentials(false)
+
+						.allowedOrigins("*");
+			}
+		};
+	}
 }
