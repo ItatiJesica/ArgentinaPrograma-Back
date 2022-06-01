@@ -64,7 +64,7 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .authorizeRequests().antMatchers(HttpMethod.GET, "/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest()
                 .authenticated();
