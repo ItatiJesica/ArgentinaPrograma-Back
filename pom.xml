@@ -29,11 +29,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-	  		<groupId>org.hibernate</groupId>
-	 		<artifactId>hibernate-entitymanager</artifactId>
-	 		<version>5.6.7.Final</version>
-	 	</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -92,7 +88,6 @@
 					<processTypes>
 						<web>java $JAVA_OPTS -cp target/classes:target/dependency/* com.argentinaprograma.portfolio.PortfolioApplication</web>
 					</processTypes>
-					<appName>fast-anchorage-48324</appName>
 				</configuration>
 			</plugin>
 		</plugins>
